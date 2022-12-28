@@ -1,13 +1,15 @@
 from flask import Flask
 
-app = Flask(__name__)
+from blog.users.views import users
+from blog.articles.views import articles
 
 
-@app.route('/')
-def index():
-    return 'Hello world!'
+def create_app() -> Flask:
+    app = Flask(__name__)
+    register_blueprints(app)
+    return app
 
 
-@app.route("/greet/<string:name>/")
-def greet_name(name: str):
-    return f"Hello {name}!"
+def register_blueprints(app: Flask):
+    app.register_blueprint(users)
+    app.register_blueprint(articles)
