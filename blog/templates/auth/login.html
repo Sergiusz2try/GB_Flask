@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}
+    Login
+{% endblock %}
+
+{% block body %}
+    <h1>Login as user:</h1>
+    {% if error %}
+        <div class="alert alert-danger" role="alert">
+                {{ error }}
+        </div>
+    {% endif %}
+    <form method="post">
+        <lable for="input-username">Login as (username):</lable>
+        <input type="text" name="username" id="input-username" placeholder="guest" required>
+        <button type="submit" name="login">Login</button>
+    </form>
+{% endblock %}
