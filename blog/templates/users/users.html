@@ -11,7 +11,12 @@
             {% for user in users %}
                 <div class="row">
                     <div class="col">
-                        <li><a href="{{ url_for('users.details', pk=user) }}">{{ users[user] }}</a></li>
+                        <li>
+                            <a href="{{ url_for('users.details', pk=user.id) }}">{{ user.username }}</a>
+                            {% if user.is_staff %}
+                                <span class="badge bg-secondary">staff</span>
+                            {% endif %}
+                        </li>
                     </div>
                 </div>
             {% endfor %}
