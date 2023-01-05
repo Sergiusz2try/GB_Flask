@@ -1,5 +1,6 @@
 from flask import Blueprint
 from flask import render_template
+from flask_login import login_required
 
 from blog.models import User
 
@@ -13,6 +14,7 @@ def users_list():
 
 
 @users.route('/<int:pk>', endpoint='details')
+@login_required
 def details(pk):
     user = User.query.get_or_404(pk)
     return render_template('users/details.html', user=user)

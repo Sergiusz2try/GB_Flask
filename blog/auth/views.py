@@ -1,12 +1,10 @@
 from flask import Blueprint, redirect, url_for, request, render_template
-from flask_login import LoginManager, login_user, login_required, logout_user
+from flask_login import login_user, login_required, logout_user
+from blog.config.extansions import login_manager
 
 from blog.models import User
 
 auth_app = Blueprint("auth_app", __name__, static_folder="../static")
-
-login_manager = LoginManager()
-login_manager.login_view = "auth_app.login"
 
 
 @login_manager.user_loader
