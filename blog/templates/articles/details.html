@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Article #{{ pk }}
+{% endblock %}
+
+{% block body %}
+    <h1>{{ articles[pk]['title'] }}</h1>
+    <div>
+        <h5>
+            Author: {{ articles[pk]['author'] }}
+        </h5>
+    </div>
+    <div>
+        <p>
+            {{ articles[pk]['text'] }}
+        </p>
+    </div>
+    <div>
+        <a href="{{ url_for('articles.list') }}">Back to articles</a>
+    </div>
+{% endblock %}
