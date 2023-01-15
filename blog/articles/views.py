@@ -4,7 +4,13 @@ from flask import render_template
 from werkzeug.exceptions import NotFound
 
 
-articles = Blueprint('articles', __name__, url_prefix='/articles', static_folder='../static')
+articles = Blueprint(
+    'articles',
+    __name__,
+    url_prefix='/articles',
+    static_folder='../static',
+    template_folder="../templates"
+)
 
 ARTICLES = {
     1: {

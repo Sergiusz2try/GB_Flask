@@ -4,7 +4,13 @@ from flask_login import login_required
 
 from blog.models import User
 
-users = Blueprint('users', __name__, url_prefix='/users', static_folder='../static')
+users = Blueprint(
+    'users',
+    __name__,
+    url_prefix='/users',
+    static_folder='../static',
+    template_folder="../templates"
+)
 
 
 @users.route('/', endpoint='list')

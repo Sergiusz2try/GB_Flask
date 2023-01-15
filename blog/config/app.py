@@ -2,7 +2,7 @@ from flask import Flask
 
 from blog.config import commands
 from blog.models import User
-from blog.config.extansions import db, login_manager, migrate
+from blog.config.extansions import db, login_manager, migrate, csrf
 
 from blog.users.views import users
 from blog.articles.views import articles
@@ -10,7 +10,7 @@ from blog.auth.views import auth_app
 
 
 def create_app() -> Flask:
-    app = Flask(__name__)
+    app = Flask(__name__, template_folder="../template", static_folder="../static")
 
     CONFIG_NAME = "DevConfig"
     app.config.from_object(f"blog.config.config.{CONFIG_NAME}")
@@ -24,6 +24,7 @@ def create_app() -> Flask:
 def register_extensions(app):
     db.init_app(app)
     migrate.init_app(app, db, compare_type=True)
+    csrf.init_app(app)
 
     login_manager.login_view = "auth_app.login"
     login_manager.init_app(app)
@@ -40,5 +41,4 @@ def register_blueprints(app: Flask):
 
 
 def register_commands(app: Flask):
-    app.cli.add_command(commands.init_db)
-    app.cli.add_command(commands.create_user)
+    app.cli.add_command(commands.create_admin)

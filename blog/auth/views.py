@@ -1,10 +1,18 @@
 from flask import Blueprint, redirect, url_for, request, render_template
-from flask_login import login_user, login_required, logout_user
-from blog.config.extansions import login_manager
+from flask_login import login_user, login_required, logout_user, current_user
+from blog.config.extansions import login_manager, db
+from blog.forms.user import UserRegisterForm
+
+from werkzeug.security import generate_password_hash
 
 from blog.models import User
 
-auth_app = Blueprint("auth_app", __name__, static_folder="../static")
+auth_app = Blueprint(
+    "auth_app",
+    __name__,
+    static_folder="../static",
+    template_folder="../templates"
+)
 
 
 @login_manager.user_loader
@@ -39,6 +47,37 @@ def login():
 def logout():
     logout_user()
     return redirect(url_for("auth_app.login"))
+
+
+@auth_app.route("/register", methods=["GET", "POST"], endpoint="register")
+def register():
+    if current_user.is_authenticated:
+        return redirect(url_for("users.details", pk=current_user.id))
+
+    form = UserRegisterForm(request.form)
+    errors = []
+
+    if request.method == "POST" and form.validate_on_submit():
+        if User.query.filter_by(email=form.email.data).count():
+            form.email.errors.append("This email is already registered!")
+            render_template("auth/register.html", form=form)
+
+        _user = User(
+            username=form.username.data,
+            email=form.email.data,
+            password=generate_password_hash(form.password.data)
+        )
+
+        db.session.add(_user)
+        db.session.commit()
+
+        login_user(_user)
+
+    return render_template(
+        "auth/register.html",
+        form=form,
+        errors=errors,
+    )
 
 
 @auth_app.route("/secret")
