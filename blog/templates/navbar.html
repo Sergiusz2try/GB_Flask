@@ -8,11 +8,11 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                 <div class="navbar-nav">
-                    {% for (endpoint, lable) in [('users.list', 'Users')] %}
-                        <a class="nav-link {% if request.endpoint == endpoint %}active{% endif %}" aria-current="page"
-                           href="{{ url_for(endpoint) }}">{{ lable }}</a>
-                    {% endfor %}
-                    {% for (endpoint, lable) in [('articles.list', 'Articles')] %}
+                    {% for (endpoint, lable) in [
+                                       ('users.list', 'Users'),
+                                       ('articles.list', 'Articles'),
+                                       ('authors_app.list', 'Authors'),
+                                     ] %}
                         <a class="nav-link {% if request.endpoint == endpoint %}active{% endif %}" aria-current="page"
                            href="{{ url_for(endpoint) }}">{{ lable }}</a>
                     {% endfor %}

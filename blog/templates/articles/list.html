@@ -11,10 +11,12 @@
             {% for art in articles %}
                 <div class="row">
                     <div class="col">
-                        <li><a href="{{ url_for('articles.details', pk=art) }}">{{ articles[art]['title'] }}</a></li>
+                        <li><a href="{{ url_for('articles.details', pk=art.id) }}">{{ art.title }}</a></li>
                     </div>
                 </div>
             {% endfor %}
         </ul>
+        <hr>
+        <a href="{{ url_for('articles.create')}}">Create new</a>
     </div>
 {% endblock %}

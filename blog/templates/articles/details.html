@@ -1,22 +1,13 @@
 {% extends 'base.html' %}
-
 {% block title %}
-    Article #{{ pk }}
+    Article #{{ article.id }}: {{ article.title }}
 {% endblock %}
-
 {% block body %}
-    <h1>{{ articles[pk]['title'] }}</h1>
+    <h1>{{ article.title }}</h1>
     <div>
-        <h5>
-            Author: {{ articles[pk]['author'] }}
-        </h5>
+        <p>{{ article.body }}</p>
+        <div>Published {{ article.dt_created }}</div>
+        <div>by {{ article.author.user.username }}</div>
     </div>
-    <div>
-        <p>
-            {{ articles[pk]['text'] }}
-        </p>
-    </div>
-    <div>
-        <a href="{{ url_for('articles.list') }}">Back to articles</a>
-    </div>
+    <a href="{{ url_for('articles.list') }}">Back to users</a>
 {% endblock %}

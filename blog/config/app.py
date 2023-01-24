@@ -1,12 +1,13 @@
 from flask import Flask
 
+from blog.authors.view import authors_app
 from blog.config import commands
 from blog.models import User
 from blog.config.extansions import db, login_manager, migrate, csrf
 
 from blog.users.views import users
 from blog.articles.views import articles
-from blog.auth.views import auth_app
+from blog.auth.view import auth_app
 
 
 def create_app() -> Flask:
@@ -38,6 +39,7 @@ def register_blueprints(app: Flask):
     app.register_blueprint(users)
     app.register_blueprint(articles)
     app.register_blueprint(auth_app)
+    app.register_blueprint(authors_app, url_prefix="/authors")
 
 
 def register_commands(app: Flask):

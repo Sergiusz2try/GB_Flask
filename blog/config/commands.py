@@ -2,7 +2,6 @@ import click
 from werkzeug.security import generate_password_hash
 
 from blog.config.extansions import db
-from blog.models import User
 
 
 @click.command("create-admin")
@@ -17,7 +16,7 @@ def create_admin():
 
     with app.app_context():
         db.session.add(
-            User(username=username, email=email, password=password, is_staff=True)
+            User(username=username, email=email, password=password)
         )
 
         db.session.commit()

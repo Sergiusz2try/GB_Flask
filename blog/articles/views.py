@@ -1,8 +1,13 @@
-from flask import Blueprint
+from flask import Blueprint, request, current_app, redirect, url_for
 from flask import render_template
+from flask_login import login_required, current_user
+from sqlalchemy.exc import IntegrityError
 
 from werkzeug.exceptions import NotFound
 
+from blog.config.extansions import db
+from blog.forms.article import CreateArticleForm
+from blog.models import Article, Author
 
 articles = Blueprint(
     'articles',
@@ -12,34 +17,45 @@ articles = Blueprint(
     template_folder="../templates"
 )
 
-ARTICLES = {
-    1: {
-        "title": "lorem ipsum dolor sit 1",
-        "text": "lorem ipsum dolor sit lorem sit lore mauris vel aug def def text",
-        "author": 1
-    },
-    2: {
-        "title": "lorem ipsum dolor sit 2",
-        "text": "lorem ipsum dolor sit lorem sit lore mauris vel aug def def text",
-        "author": 2
-    },
-    3: {
-        "title": "lorem ipsum dolor sit 3",
-        "text": "lorem ipsum dolor sit lorem sit lore mauris vel aug def def text",
-        "author": 3
-    }
-}
-
 
 @articles.route('/', endpoint='list')
 def articles_list():
-    return render_template('articles/articles.html', articles=ARTICLES)
+    ARTICLES = Article.query.all()
+    return render_template('articles/list.html', articles=ARTICLES)
 
 
 @articles.route('/<int:pk>', endpoint='details')
-def get_details(pk: int):
-    try:
-        article = ARTICLES[pk]
-    except KeyError:
-        raise NotFound(f'Page with id {pk} not found')
-    return render_template('articles/details.html', pk=pk, articles=ARTICLES)
+def articles_detail(pk):
+    article = Article.query.filter_by(id=pk).one_or_none()
+    if article is None:
+        raise NotFound()
+    return render_template('articles/details.html', article=article)
+
+
+@articles.route("/create/", methods=["GET", "POST"], endpoint="create")
+@login_required
+def create_article():
+    error = None
+    form = CreateArticleForm(request.form)
+    if request.method == "POST" and form.validate_on_submit():
+        article = Article(title=form.title.data.strip(), body=form.body.data)
+        db.session.add(article)
+        if current_user.author:
+            # use existing author if present
+            article.author = current_user.author
+        else:
+            # otherwise create author record
+            author = Author(user_id=current_user.id)
+            db.session.add(author)
+            db.session.flush()
+            article.author = current_user.author
+
+        try:
+            db.session.commit()
+        except IntegrityError:
+            current_app.logger.exception("Could not create a new article!")
+            error = "Could not create article!"
+        else:
+            return redirect(url_for("articles.details", pk=article.id))
+
+    return render_template("articles/create.html", form=form, error=error)
