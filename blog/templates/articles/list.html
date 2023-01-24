@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Articles
+{% endblock %}
+
+{% block body %}
+    <h1>Articles</h1>
+    <div>
+        <ul>
+            {% for art in articles %}
+                <div class="row">
+                    <div class="col">
+                        <li><a href="{{ url_for('articles.details', pk=art.id) }}">{{ art.title }}</a></li>
+                    </div>
+                </div>
+            {% endfor %}
+        </ul>
+        <hr>
+        <a href="{{ url_for('articles.create')}}">Create new</a>
+    </div>
+{% endblock %}
