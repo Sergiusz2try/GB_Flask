@@ -6,17 +6,21 @@
 
 {% block body %}
     <h1>Articles</h1>
-    <div>
-        <ul>
-            {% for art in articles %}
-                <div class="row">
-                    <div class="col">
-                        <li><a href="{{ url_for('articles.details', pk=art.id) }}">{{ art.title }}</a></li>
-                    </div>
+    <a class="btn btn-outline-dark" href="{{ url_for('articles.create') }}">Create new</a>
+    <hr>
+    <div class="card-deck">
+        {% for art in articles %}
+            <div class="card border-light mb-3 p-2">
+                <div class="card-header">{{ art.title }}</div>
+                <div class="card-body">
+                    <h5 class="card-title">Author: {{ art.author.user.username }}</h5>
+                    <p class="card-text">{{ art.body }}</p>
+                    <a class="btn btn-primary" href="{{ url_for('articles.details', pk=art.id) }}" role="button">More</a>
                 </div>
-            {% endfor %}
-        </ul>
-        <hr>
-        <a href="{{ url_for('articles.create')}}">Create new</a>
+                <div class="card-footer">
+                    <small class="text-muted">Created at: {{ art.dt_created }}</small>
+                </div>
+            </div>
+        {% endfor %}
     </div>
 {% endblock %}
