@@ -22,3 +22,6 @@ class Article(db.Model):
     )
 
     author = relationship("Author", back_populates="articles")
+
+    def __str__(self):
+        return self.title

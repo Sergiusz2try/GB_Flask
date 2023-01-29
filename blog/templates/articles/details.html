@@ -12,7 +12,11 @@
             <div>Tags:</div>
             <ul>
                 {% for tag in article.tags %}
-                    <li>{{ tag.name }}</li>
+                    <li>
+                        <span class="badge bg-secondary">
+                            {{ tag.name }}
+                        </span>
+                    </li>
                 {% endfor %}
             </ul>
         {% endif %}

@@ -2,6 +2,7 @@ from flask import Flask
 
 from blog.authors.view import authors_app
 from blog.config import commands
+from blog.config.admin import admin
 from blog.models import User
 from blog.config.extansions import db, login_manager, migrate, csrf
 
@@ -26,6 +27,7 @@ def register_extensions(app):
     db.init_app(app)
     migrate.init_app(app, db, compare_type=True)
     csrf.init_app(app)
+    admin.init_app(app)
 
     login_manager.login_view = "auth_app.login"
     login_manager.init_app(app)

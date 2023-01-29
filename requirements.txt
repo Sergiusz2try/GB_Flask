@@ -10,3 +10,4 @@ SQLAlchemy==1.4.45
 Werkzeug==2.2.2
 psycopg2-binary==2.9.5
 Flask-Migrate==4.0.1
+flask-admin==1.6.0

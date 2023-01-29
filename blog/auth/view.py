@@ -75,13 +75,15 @@ def register():
         _user = User(
             username=form.username.data,
             email=form.email.data,
-            password=generate_password_hash(form.password.data)
+            password=generate_password_hash(form.password.data),
+            is_staff=False
         )
 
         db.session.add(_user)
         db.session.commit()
 
         login_user(_user)
+        redirect(url_for("articles.list"))
 
     return render_template(
         "auth/register.html",

@@ -5,6 +5,7 @@ class BaseConfig(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SECRET_KEY = "KpmuRUyKhU5NNlqfl2zGpKXDIG8hjHfu"
     WTF_CSRF_ENABLED = True
+    FLASK_ADMIN_SWATH = "cosmo"
 
 
 class DevConfig(BaseConfig):
