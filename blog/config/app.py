@@ -1,0 +1,49 @@
+from flask import Flask
+
+from blog.authors.view import authors_app
+from blog.config import commands
+from blog.config.admin import admin
+from blog.models import User
+from blog.config.extansions import db, login_manager, migrate, csrf
+
+from blog.users.views import users
+from blog.articles.views import articles
+from blog.auth.view import auth_app
+
+
+def create_app() -> Flask:
+    app = Flask(__name__, template_folder="../template", static_folder="../static")
+
+    CONFIG_NAME = "DevConfig"
+    app.config.from_object(f"blog.config.config.{CONFIG_NAME}")
+
+    register_extensions(app)
+    register_blueprints(app)
+    register_commands(app)
+    return app
+
+
+def register_extensions(app):
+    db.init_app(app)
+    migrate.init_app(app, db, compare_type=True)
+    csrf.init_app(app)
+    admin.init_app(app)
+
+    login_manager.login_view = "auth_app.login"
+    login_manager.init_app(app)
+
+    @login_manager.user_loader
+    def load_user(user_id):
+        return User.query.get_or_404(int(user_id))
+
+
+def register_blueprints(app: Flask):
+    app.register_blueprint(users)
+    app.register_blueprint(articles)
+    app.register_blueprint(auth_app)
+    app.register_blueprint(authors_app, url_prefix="/authors")
+
+
+def register_commands(app: Flask):
+    app.cli.add_command(commands.create_admin)
+    app.cli.add_command(commands.create_tags)
