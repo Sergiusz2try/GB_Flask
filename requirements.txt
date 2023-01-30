@@ -11,3 +11,8 @@ Werkzeug==2.2.2
 psycopg2-binary==2.9.5
 Flask-Migrate==4.0.1
 flask-admin==1.6.0
+Flask-COMBO-JSONAPI==1.1.0
+markupsafe==2.0.1
+ComboJSONAPI==1.0.5
+apispec==2.0.2
+PyYAML==5.3.1

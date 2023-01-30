@@ -10,6 +10,8 @@ from blog.users.views import users
 from blog.articles.views import articles
 from blog.auth.view import auth_app
 
+from blog.api import init_api
+
 
 def create_app() -> Flask:
     app = Flask(__name__, template_folder="../template", static_folder="../static")
@@ -28,6 +30,7 @@ def register_extensions(app):
     migrate.init_app(app, db, compare_type=True)
     csrf.init_app(app)
     admin.init_app(app)
+    api = init_api(app)
 
     login_manager.login_view = "auth_app.login"
     login_manager.init_app(app)
