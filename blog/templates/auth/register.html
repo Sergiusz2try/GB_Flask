@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% from "macro/formhelper.html" import render_field %}
+
+{% block title %}
+    Registration
+{% endblock %}
+
+{% block body %}
+<body class="text-center wotdisconnected='true'">
+    {% if errors %}
+        {% for error in errors %}
+            <div class="alert alert-danger" role="alert">
+                {{ error }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    <main class="form-signin w-25 m-auto position-absolute top-50 start-50 translate-middle ">
+            <form method="POST">
+                {{ form.csrf_token }}
+                <img class="mb-4" src="{{ url_for('static', filename='icon.jpg') }}" width="72" height="57" alt="icon">
+                <h1 class="h3 mb-3 fw-normal">Registration</h1>
+                {% for field in ["username", "email", "password", "confirm_password"] %}
+                    {{ render_field(form[field]) }}
+                {% endfor %}
+                {{ form.submit(class="w-100 btn btn-lg btn-primary mt-3") }}
+            </form>
+    </main>
+</body>
+{% endblock %}
