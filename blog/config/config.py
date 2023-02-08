@@ -1,9 +1,15 @@
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+
 class BaseConfig(object):
     DEBUG = False
     TESTING = False
-    SQLALCHEMY_DATABASE_URI = "sqlite:///db.sqlite"
+    SQLALCHEMY_DATABASE_URI = os.getenv('SQLALCHEMY_DATABASE_URI')
     SQLALCHEMY_TRACK_MODIFICATIONS = False
-    SECRET_KEY = "KpmuRUyKhU5NNlqfl2zGpKXDIG8hjHfu"
+    SECRET_KEY = os.getenv("SECRET_KEY")
     WTF_CSRF_ENABLED = True
     FLASK_ADMIN_SWATH = "cosmo"
     OPENAPI_URL_PREFIX = '/api/swagger'
@@ -17,3 +23,8 @@ class DevConfig(BaseConfig):
 
 class TestConfig(BaseConfig):
     TESTING = True
+
+
+class ProductionConfig(BaseConfig):
+    SQLALCHEMY_DATABASE_URI = os.getenv("SQLALCHEMY_DATABASE_URI")
+    SECRET_KEY = os.getenv("SECRET_KEY")

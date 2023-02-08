@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 
 from blog.authors.view import authors_app
 from blog.config import commands
@@ -15,6 +15,10 @@ from blog.api import init_api
 
 def create_app() -> Flask:
     app = Flask(__name__, template_folder="../template", static_folder="../static")
+
+    @app.route('/')
+    def index():
+        return render_template('index.html', name="index")
 
     CONFIG_NAME = "DevConfig"
     app.config.from_object(f"blog.config.config.{CONFIG_NAME}")
